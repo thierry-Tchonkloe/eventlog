@@ -1,8 +1,7 @@
 """
 routers/debug.py
 ----------------
-POST /debug/echo — spec §7
-
+POST /debug/echo —
 """
 
 from fastapi import APIRouter, Request, Body
@@ -29,8 +28,13 @@ def _transform(value, *, parent_key: str | None = None):
         # Dans un tableau, les strings n'ont pas de clé parent → elles sont toutes inversées (aucune n'est "preserve")
         return [_transform(item, parent_key=None) for item in value]
 
-    return value # int, float, bool, None → passthrough
+    return value
 
+
+# @router.post("/debug/echo")
+# async def debug_echo(request: Request):
+#     body = await request.json()
+#     return JSONResponse(_transform(body))
 
 @router.post("/debug/echo")
 async def debug_echo(payload: Any = Body(...)):
